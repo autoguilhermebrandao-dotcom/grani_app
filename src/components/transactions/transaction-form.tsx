@@ -35,19 +35,13 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
     setCategory('')
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: { preventDefault: () => void }) {
     e.preventDefault()
     setError('')
 
     const parsedAmount = parseFloat(amount.replace(',', '.'))
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      setError('Valor inválido.')
-      return
-    }
-    if (!category) {
-      setError('Selecione uma categoria.')
-      return
-    }
+    if (isNaN(parsedAmount) || parsedAmount <= 0) { setError('Valor inválido.'); return }
+    if (!category) { setError('Selecione uma categoria.'); return }
 
     setLoading(true)
 
@@ -56,21 +50,13 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
         .from('transactions')
         .update({ type, amount: parsedAmount, description, category, date })
         .eq('id', transaction.id)
-
       if (error) { setError(error.message); setLoading(false); return }
     } else {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { setError('Sessão expirada.'); setLoading(false); return }
-
       const { error } = await supabase.from('transactions').insert({
-        user_id: user.id,
-        type,
-        amount: parsedAmount,
-        description,
-        category,
-        date,
+        user_id: user.id, type, amount: parsedAmount, description, category, date,
       })
-
       if (error) { setError(error.message); setLoading(false); return }
     }
 
@@ -79,8 +65,7 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Type toggle */}
-      <div className="flex rounded-lg overflow-hidden border border-slate-200">
+      <div className="flex rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700">
         {(['expense', 'income'] as TransactionType[]).map((t) => (
           <button
             key={t}
@@ -88,10 +73,8 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
             onClick={() => handleTypeChange(t)}
             className={`flex-1 py-2 text-sm font-medium transition-colors ${
               type === t
-                ? t === 'income'
-                  ? 'bg-emerald-500 text-white'
-                  : 'bg-red-500 text-white'
-                : 'bg-white text-slate-500 hover:bg-slate-50'
+                ? t === 'income' ? 'bg-emerald-500 text-white' : 'bg-red-500 text-white'
+                : 'bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
             }`}
           >
             {t === 'income' ? 'Receita' : 'Despesa'}
@@ -101,27 +84,14 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
 
       <div className="space-y-1.5">
         <Label htmlFor="amount">Valor (R$)</Label>
-        <Input
-          id="amount"
-          type="text"
-          inputMode="decimal"
-          placeholder="0,00"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          required
-        />
+        <Input id="amount" type="text" inputMode="decimal" placeholder="0,00"
+          value={amount} onChange={(e) => setAmount(e.target.value)} required />
       </div>
 
       <div className="space-y-1.5">
         <Label htmlFor="description">Descrição</Label>
-        <Input
-          id="description"
-          type="text"
-          placeholder="Ex: Supermercado"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
+        <Input id="description" type="text" placeholder="Ex: Supermercado"
+          value={description} onChange={(e) => setDescription(e.target.value)} required />
       </div>
 
       <div className="space-y-1.5">
@@ -140,17 +110,12 @@ export function TransactionForm({ transaction, onSuccess, onCancel }: Transactio
 
       <div className="space-y-1.5">
         <Label htmlFor="date">Data</Label>
-        <Input
-          id="date"
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+        <Input id="date" type="date" value={date}
+          onChange={(e) => setDate(e.target.value)} required />
       </div>
 
       {error && (
-        <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-md">{error}</p>
+        <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/40 px-3 py-2 rounded-md">{error}</p>
       )}
 
       <div className="flex gap-2 pt-1">

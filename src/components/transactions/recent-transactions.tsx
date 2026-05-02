@@ -34,45 +34,40 @@ export function RecentTransactions({ transactions, loading, onRefetch }: RecentT
 
   return (
     <>
-      <Card className="border-0 shadow-sm">
+      <Card className="border-0 shadow-sm dark:bg-slate-900">
         <CardHeader className="pb-2">
-          <CardTitle className="text-base font-semibold text-slate-900">Transações Recentes</CardTitle>
+          <CardTitle className="text-base font-semibold text-slate-900 dark:text-slate-100">Transações Recentes</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
-              Carregando...
-            </div>
+            <div className="flex items-center justify-center h-48 text-sm text-slate-400">Carregando...</div>
           ) : recent.length === 0 ? (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
+            <div className="flex items-center justify-center h-48 text-sm text-slate-400 dark:text-slate-500">
               Nenhuma transação este mês
             </div>
           ) : (
-            <ul className="divide-y divide-slate-50">
+            <ul className="divide-y divide-slate-50 dark:divide-slate-800">
               {recent.map((t) => (
-                <li key={t.id} className="flex items-center justify-between px-5 py-3 hover:bg-slate-50 transition-colors">
+                <li key={t.id} className="flex items-center justify-between px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <div className="flex flex-col min-w-0">
-                    <span className="text-sm font-medium text-slate-800 truncate">{t.description}</span>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-sm font-medium text-slate-800 dark:text-slate-200 truncate">{t.description}</span>
+                    <span className="text-xs text-slate-400 dark:text-slate-500">
                       {getCategoryLabel(t.category)} · {formatDate(t.date)}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 ml-4 shrink-0">
-                    <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600' : 'text-red-500'}`}>
+                    <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
                       {t.type === 'income' ? '+' : '-'}{formatCurrency(t.amount)}
                     </span>
                     <DropdownMenu>
-                      <DropdownMenuTrigger className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+                      <DropdownMenuTrigger className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <MoreHorizontal className="w-4 h-4" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-36">
                         <DropdownMenuItem onClick={() => setEditing(t)}>
                           <Pencil className="w-3.5 h-3.5 mr-2" /> Editar
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="text-red-600 focus:text-red-600"
-                          onClick={() => setDeleting(t)}
-                        >
+                        <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={() => setDeleting(t)}>
                           <Trash2 className="w-3.5 h-3.5 mr-2" /> Excluir
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -110,10 +105,7 @@ export function RecentTransactions({ transactions, loading, onRefetch }: RecentT
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-500 hover:bg-red-600"
-              onClick={handleDelete}
-            >
+            <AlertDialogAction className="bg-red-500 hover:bg-red-600" onClick={handleDelete}>
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

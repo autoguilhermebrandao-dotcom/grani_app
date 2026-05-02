@@ -22,7 +22,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  async function handleRegister(e: React.FormEvent) {
+  async function handleRegister(e: { preventDefault: () => void }) {
     e.preventDefault()
     setError('')
 
@@ -30,14 +30,12 @@ export default function RegisterPage() {
       setError('As senhas não coincidem.')
       return
     }
-
     if (password.length < 6) {
       setError('A senha deve ter no mínimo 6 caracteres.')
       return
     }
 
     setLoading(true)
-
     const { error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
@@ -53,14 +51,14 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-        <Card className="w-full max-w-sm border-0 shadow-lg text-center p-8">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
+        <Card className="w-full max-w-sm border-0 shadow-lg dark:bg-slate-900 text-center p-8">
           <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-emerald-600" />
+            <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <h2 className="text-lg font-semibold text-slate-900">Conta criada!</h2>
-            <p className="text-sm text-slate-500">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Conta criada!</h2>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Verifique seu email para confirmar o cadastro. Redirecionando para login...
             </p>
           </div>
@@ -70,17 +68,17 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 p-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="flex flex-col items-center gap-2">
           <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-emerald-500">
             <TrendingUp className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">Grani</h1>
-          <p className="text-sm text-slate-500">Suas finanças, simplificadas</p>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Grani</h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Suas finanças, simplificadas</p>
         </div>
 
-        <Card className="border-0 shadow-lg">
+        <Card className="border-0 shadow-lg dark:bg-slate-900">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg">Criar conta</CardTitle>
             <CardDescription>Comece a controlar suas finanças hoje</CardDescription>
@@ -89,43 +87,22 @@ export default function RegisterPage() {
             <form onSubmit={handleRegister} className="space-y-4">
               <div className="space-y-1.5">
                 <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
+                <Input id="email" type="email" placeholder="seu@email.com" value={email}
+                  onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="password">Senha</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Mínimo 6 caracteres"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
+                <Input id="password" type="password" placeholder="Mínimo 6 caracteres" value={password}
+                  onChange={(e) => setPassword(e.target.value)} required autoComplete="new-password" />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="confirm">Confirmar senha</Label>
-                <Input
-                  id="confirm"
-                  type="password"
-                  placeholder="Repita a senha"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                />
+                <Input id="confirm" type="password" placeholder="Repita a senha" value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)} required autoComplete="new-password" />
               </div>
 
               {error && (
-                <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-md">{error}</p>
+                <p className="text-sm text-red-500 bg-red-50 dark:bg-red-950/40 px-3 py-2 rounded-md">{error}</p>
               )}
 
               <Button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-600" disabled={loading}>
@@ -136,9 +113,9 @@ export default function RegisterPage() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-sm text-slate-500">
+        <p className="text-center text-sm text-slate-500 dark:text-slate-400">
           Já tem conta?{' '}
-          <Link href="/auth/login" className="font-medium text-emerald-600 hover:text-emerald-700">
+          <Link href="/auth/login" className="font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300">
             Entrar
           </Link>
         </p>

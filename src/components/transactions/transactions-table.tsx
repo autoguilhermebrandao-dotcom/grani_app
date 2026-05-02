@@ -34,14 +34,12 @@ export function TransactionsTable({ transactions, loading, onRefetch }: Transact
 
   return (
     <>
-      <Card className="border-0 shadow-sm overflow-hidden">
+      <Card className="border-0 shadow-sm dark:bg-slate-900 overflow-hidden">
         <CardContent className="p-0">
           {loading ? (
-            <div className="flex items-center justify-center h-48 text-sm text-slate-400">
-              Carregando...
-            </div>
+            <div className="flex items-center justify-center h-48 text-sm text-slate-400">Carregando...</div>
           ) : transactions.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-48 text-sm text-slate-400 gap-2">
+            <div className="flex flex-col items-center justify-center h-48 text-sm text-slate-400 dark:text-slate-500 gap-2">
               <p>Nenhuma transação encontrada</p>
               <p className="text-xs">Tente ajustar os filtros ou adicionar uma transação</p>
             </div>
@@ -51,48 +49,43 @@ export function TransactionsTable({ transactions, loading, onRefetch }: Transact
               <div className="hidden md:block">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-slate-50 hover:bg-slate-50">
-                      <TableHead className="text-xs font-medium text-slate-500 pl-5">Descrição</TableHead>
-                      <TableHead className="text-xs font-medium text-slate-500">Categoria</TableHead>
-                      <TableHead className="text-xs font-medium text-slate-500">Data</TableHead>
-                      <TableHead className="text-xs font-medium text-slate-500">Tipo</TableHead>
-                      <TableHead className="text-xs font-medium text-slate-500 text-right pr-5">Valor</TableHead>
+                    <TableRow className="bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                      <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 pl-5">Descrição</TableHead>
+                      <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400">Categoria</TableHead>
+                      <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400">Data</TableHead>
+                      <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400">Tipo</TableHead>
+                      <TableHead className="text-xs font-medium text-slate-500 dark:text-slate-400 text-right pr-5">Valor</TableHead>
                       <TableHead className="w-12" />
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {transactions.map((t) => (
-                      <TableRow key={t.id} className="hover:bg-slate-50">
-                        <TableCell className="font-medium text-slate-800 pl-5">{t.description}</TableCell>
-                        <TableCell className="text-slate-500 text-sm">{getCategoryLabel(t.category)}</TableCell>
-                        <TableCell className="text-slate-500 text-sm">{formatDate(t.date)}</TableCell>
+                      <TableRow key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 border-slate-100 dark:border-slate-800">
+                        <TableCell className="font-medium text-slate-800 dark:text-slate-200 pl-5">{t.description}</TableCell>
+                        <TableCell className="text-slate-500 dark:text-slate-400 text-sm">{getCategoryLabel(t.category)}</TableCell>
+                        <TableCell className="text-slate-500 dark:text-slate-400 text-sm">{formatDate(t.date)}</TableCell>
                         <TableCell>
-                          <Badge
-                            variant="secondary"
-                            className={t.type === 'income'
-                              ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-50'
-                              : 'bg-red-50 text-red-600 hover:bg-red-50'
-                            }
-                          >
+                          <Badge variant="secondary" className={
+                            t.type === 'income'
+                              ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50'
+                              : 'bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 hover:bg-red-50'
+                          }>
                             {t.type === 'income' ? 'Receita' : 'Despesa'}
                           </Badge>
                         </TableCell>
-                        <TableCell className={`text-right font-semibold pr-5 ${t.type === 'income' ? 'text-emerald-600' : 'text-red-500'}`}>
+                        <TableCell className={`text-right font-semibold pr-5 ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
                           {t.type === 'income' ? '+' : '-'}{formatCurrency(t.amount)}
                         </TableCell>
                         <TableCell>
                           <DropdownMenu>
-                            <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+                            <DropdownMenuTrigger className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                               <MoreHorizontal className="w-4 h-4" />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end" className="w-36">
                               <DropdownMenuItem onClick={() => setEditing(t)}>
                                 <Pencil className="w-3.5 h-3.5 mr-2" /> Editar
                               </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-red-600 focus:text-red-600"
-                                onClick={() => setDeleting(t)}
-                              >
+                              <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={() => setDeleting(t)}>
                                 <Trash2 className="w-3.5 h-3.5 mr-2" /> Excluir
                               </DropdownMenuItem>
                             </DropdownMenuContent>
@@ -105,37 +98,34 @@ export function TransactionsTable({ transactions, loading, onRefetch }: Transact
               </div>
 
               {/* Mobile list */}
-              <ul className="md:hidden divide-y divide-slate-50">
+              <ul className="md:hidden divide-y divide-slate-50 dark:divide-slate-800">
                 {transactions.map((t) => (
                   <li key={t.id} className="flex items-center justify-between px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className={`p-1.5 rounded-full ${t.type === 'income' ? 'bg-emerald-50' : 'bg-red-50'}`}>
+                      <div className={`p-1.5 rounded-full ${t.type === 'income' ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-red-50 dark:bg-red-950'}`}>
                         {t.type === 'income'
-                          ? <ArrowUpCircle className="w-4 h-4 text-emerald-500" />
-                          : <ArrowDownCircle className="w-4 h-4 text-red-500" />
+                          ? <ArrowUpCircle className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                          : <ArrowDownCircle className="w-4 h-4 text-red-500 dark:text-red-400" />
                         }
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-slate-800">{t.description}</p>
-                        <p className="text-xs text-slate-400">{getCategoryLabel(t.category)} · {formatDate(t.date)}</p>
+                        <p className="text-sm font-medium text-slate-800 dark:text-slate-200">{t.description}</p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500">{getCategoryLabel(t.category)} · {formatDate(t.date)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600' : 'text-red-500'}`}>
+                      <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-500 dark:text-red-400'}`}>
                         {t.type === 'income' ? '+' : '-'}{formatCurrency(t.amount)}
                       </span>
                       <DropdownMenu>
-                        <DropdownMenuTrigger className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors">
+                        <DropdownMenuTrigger className="inline-flex h-7 w-7 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                           <MoreHorizontal className="w-4 h-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-36">
                           <DropdownMenuItem onClick={() => setEditing(t)}>
                             <Pencil className="w-3.5 h-3.5 mr-2" /> Editar
                           </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="text-red-600 focus:text-red-600"
-                            onClick={() => setDeleting(t)}
-                          >
+                          <DropdownMenuItem className="text-red-600 focus:text-red-600" onClick={() => setDeleting(t)}>
                             <Trash2 className="w-3.5 h-3.5 mr-2" /> Excluir
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -151,9 +141,7 @@ export function TransactionsTable({ transactions, loading, onRefetch }: Transact
 
       <Dialog open={!!editing} onOpenChange={(open) => !open && setEditing(null)}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Editar Transação</DialogTitle>
-          </DialogHeader>
+          <DialogHeader><DialogTitle>Editar Transação</DialogTitle></DialogHeader>
           {editing && (
             <TransactionForm
               transaction={editing}
@@ -174,10 +162,7 @@ export function TransactionsTable({ transactions, loading, onRefetch }: Transact
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-500 hover:bg-red-600"
-              onClick={handleDelete}
-            >
+            <AlertDialogAction className="bg-red-500 hover:bg-red-600" onClick={handleDelete}>
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

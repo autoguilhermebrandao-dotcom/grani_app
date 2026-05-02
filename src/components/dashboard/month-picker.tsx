@@ -30,17 +30,17 @@ export function MonthPicker({ month, year, onChange }: MonthPickerProps) {
   const isCurrent = year === now.getFullYear() && month === now.getMonth() + 1
 
   return (
-    <div className="flex items-center gap-2">
-      <Button variant="ghost" size="icon" className="h-8 w-8" onClick={prev}>
+    <div className="flex items-center gap-1">
+      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400" onClick={prev}>
         <ChevronLeft className="w-4 h-4" />
       </Button>
-      <span className="text-sm font-medium text-slate-700 capitalize min-w-[140px] text-center">
+      <span className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize min-w-[140px] text-center">
         {getMonthName(month, year)}
       </span>
       <Button
         variant="ghost"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 text-slate-500 dark:text-slate-400"
         onClick={next}
         disabled={isCurrent}
       >
